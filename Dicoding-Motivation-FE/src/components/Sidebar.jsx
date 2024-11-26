@@ -12,7 +12,7 @@ export default function Sidebar() {
   //   console.log(active_path);
 
   return (
-    <div className="py-4 self-stretch flex flex-col gap-2 text-theme-shadow font-medium 2xl:w-1/6 xl:w-1/5 lg:w-1/4 bg-theme-sidebar">
+    <div className="py-4 self-stretch flex flex-col gap-2 text-theme-shadow font-medium 2xl:min-w-80 xl:min-w-72 lg:min-w-64 min-w-60 bg-theme-sidebar">
       {/* Leaderboard  */}
       <SidebarLinkButton
         text="Leaderboard"

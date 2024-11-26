@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Lencana Luar Biasa",
+    "description": "Ini lencana luar biasa yang hanya bisa dimiliki oleh beberapa orang saja.",
+    "point_needed": 500,
+    "claimed": false
+  },
+  {
+    "name": "Ergonomic Bronze Shoes",
+    "description": "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+    "point_needed": "685",
+    "claimed": true
+  },
+  {
+    "name": "Oriental Wooden Computer",
+    "description": "Andy shoes are designed to keeping in mind durability as well as trends, the most stylish range of shoes & sandals",
+    "point_needed": "201",
+    "claimed": false
+  },
+  {
+    "name": "Handmade Wooden Shoes",
+    "description": "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+    "point_needed": "411",
+    "claimed": false
+  },
+  {
+    "name": "Awesome Wooden Fish",
+    "description": "Carbonite web goalkeeper gloves are ergonomically designed to give easy fit",
+    "point_needed": "600",
+    "claimed": false
+  }
+]
