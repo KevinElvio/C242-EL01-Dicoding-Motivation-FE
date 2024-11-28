@@ -1,8 +1,10 @@
 import { FaStar } from "react-icons/fa6";
-import TitleHeader from "../components/TitleHeader";
-import BadgeList from "../data/badge.json";
+import BadgeList from "../../data/badge.json";
 import { useState } from "react";
-import BadgeItem from "../components/ItemList/BadgeItem";
+import TitleHeader from "../../components/TitleHeader";
+import BadgeItem from "../../components/ItemList/BadgeItem";
+import { toast } from "react-toastify";
+import { Link } from "react-router";
 
 export default function Badges() {
   const [UserPoint, setUserPoint] = useState(800);
@@ -17,16 +19,10 @@ export default function Badges() {
       )
     );
 
-    console.log(Data);
+    toast.success("Badges successfully claimed!", {
+      autoClose: 2000,
+    });
   };
-
-  //   const claimAction = (index) => {
-  //     setItems((prevItems) =>
-  //       prevItems.map((item, idx) =>
-  //         idx === index ? { ...item, claimed: true } : item
-  //       )
-  //     );
-  //   };
 
   return (
     <div className="flex flex-col w-full max-h-fit overflow-y-scroll">
@@ -34,9 +30,12 @@ export default function Badges() {
       <div className="flex flex-col gap-8 px-12 font-quicksand font-semibold my-8">
         {/* Redeem and Points count */}
         <div className="flex gap-2 items-center justify-between">
-          <button className="rounded-md px-4 py-2 border-2 border-theme-base hover:bg-theme-base hover:text-white duration-200">
+          <Link
+            to={"/new-features/redeem-points"}
+            className="rounded-md px-4 py-2 border-2 border-theme-base hover:bg-theme-base hover:text-white duration-200"
+          >
             Reedem Point
-          </button>
+          </Link>
           <div className="flex gap-4 items-center">
             <p className="text-2xl text-neutral-900">Current Points</p>
             <div className="rounded-lg flex items-center gap-2 p-2 bg-neutral-400 shadow-md">

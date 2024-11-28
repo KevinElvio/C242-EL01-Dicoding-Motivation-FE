@@ -1,9 +1,11 @@
 import { BsFillMortarboardFill, BsPersonCircle } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 
-export default function LeaderboardItem({ person, index }) {
+export default function LeaderboardItem({ person, index, className }) {
   return (
-    <div className="rounded-lg py-2 px-4 bg-white shadow-md shadow-theme-base/50 flex gap-4">
+    <div
+      className={`rounded-lg py-2 px-4 bg-white shadow-md shadow-theme-base/50 flex gap-4 ${className}`}
+    >
       <BsPersonCircle className="w-24 h-24 text-theme-base" />
       <div className="flex flex-col h-full justify-around">
         <p className="text-2xl text-theme-base">{person.name}</p>

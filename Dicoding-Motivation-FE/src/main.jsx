@@ -5,14 +5,19 @@ import App from "./App.jsx";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Layout from "./Layout.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
-import Badges from "./pages/Badges.jsx";
 import Survey from "./pages/Survey.jsx";
 import SkillRadar from "./pages/SkillRadar.jsx";
 import ReminderSchedule from "./pages/ReminderSchedule.jsx";
 import Streak from "./pages/Streak.jsx";
+import Badges from "./pages/Badges/Badges.jsx";
+import RedeemPoint from "./pages/Badges/RedeemPoint.jsx";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <ToastContainer />
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
@@ -23,6 +28,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="reminder-schedule" element={<ReminderSchedule />} />
           <Route path="badges" element={<Badges />} />
           <Route path="streak" element={<Streak />} />
+          <Route path="redeem-points" element={<RedeemPoint />} />
         </Route>
         {/* <App /> */}
       </Routes>

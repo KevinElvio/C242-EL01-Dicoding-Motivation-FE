@@ -1,9 +1,17 @@
 import { BsFillMortarboardFill } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 
-export default function BadgeItem({ badge, claim_action, user_point, index }) {
+export default function BadgeItem({
+  badge,
+  claim_action,
+  user_point,
+  index,
+  className,
+}) {
   return (
-    <div className="rounded-lg py-2 px-4 bg-white shadow-md shadow-theme-base/50 flex gap-4">
+    <div
+      className={`rounded-lg py-2 px-4 bg-white shadow-md shadow-theme-base/50 flex gap-4 ${className}`}
+    >
       <BsFillMortarboardFill className="w-24 h-24 text-theme-base" />
       <div className="flex flex-col h-full justify-around flex-1 gap-2">
         <p className="text-2xl text-theme-base">{badge.name}</p>
@@ -20,7 +28,9 @@ export default function BadgeItem({ badge, claim_action, user_point, index }) {
           <p>{badge.point_needed} Points</p>
         </div>
         <button
-          className="border border-theme-base text-theme-base rounded-lg px-4 py-2"
+          className={`border border-theme-base text-theme-base rounded-lg px-4 py-2 ${
+            badge.claimed ? "bg-neutral-400/50 cursor-default" : ""
+          }`}
           onClick={() => claim_action(badge.point_needed, index)}
           disabled={user_point < badge.point_needed}
         >

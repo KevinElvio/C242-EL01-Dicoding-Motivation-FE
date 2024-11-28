@@ -49,7 +49,7 @@ export default function Sidebar() {
       <SidebarLinkButton
         text="Badges"
         icon={<HiBadgeCheck className="w-8 h-8 text-theme-base" />}
-        is_active={active_path == "badges"}
+        is_active={active_path == "badges" || active_path == "redeem-points"}
         target_url={"/new-features/badges"}
       />
 
