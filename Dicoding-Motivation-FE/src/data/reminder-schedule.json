@@ -1,0 +1,183 @@
+[
+  {
+    "id": 1,
+    "name": "A Tale of Two Cities",
+    "contents": [
+      {
+        "id": 1,
+        "title": "Malone Dies",
+        "selected": true
+      },
+      {
+        "id": 2,
+        "title": "The Lion, the Witch, and the Wardrobe",
+        "selected": false
+      },
+      {
+        "id": 3,
+        "title": "The Prophet",
+        "selected": true
+      },
+      {
+        "id": 4,
+        "title": "Grimms' Fairy Tales",
+        "selected": false
+      }
+    ],
+    "frequency": "daily",
+    "time": {
+      "time": "13:21"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Lord of the Flies",
+    "contents": [
+      {
+        "id": 1,
+        "title": "Malone Dies",
+        "selected": false
+      },
+      {
+        "id": 2,
+        "title": "The Lion, the Witch, and the Wardrobe",
+        "selected": true
+      },
+      {
+        "id": 3,
+        "title": "The Prophet",
+        "selected": true
+      },
+      {
+        "id": 4,
+        "title": "Grimms' Fairy Tales",
+        "selected": true
+      }
+    ],
+    "frequency": "once",
+    "time": {
+      "time": "2024-11-29T10:21:35.438Z"
+    }
+  },
+  {
+    "id": 3,
+    "name": "The Old Man and the Sea",
+    "contents": [
+      {
+        "id": 1,
+        "title": "Malone Dies",
+        "selected": true
+      },
+      {
+        "id": 2,
+        "title": "The Lion, the Witch, and the Wardrobe",
+        "selected": false
+      },
+      {
+        "id": 3,
+        "title": "The Prophet",
+        "selected": true
+      },
+      {
+        "id": 4,
+        "title": "Grimms' Fairy Tales",
+        "selected": false
+      }
+    ],
+    "frequency": "once",
+    "time": {
+      "time": "2024-11-30T10:21:35.438Z"
+    }
+  },
+  {
+    "id": 4,
+    "name": "Peter Pan",
+    "contents": [
+      {
+        "id": 1,
+        "title": "Malone Dies",
+        "selected": true
+      },
+      {
+        "id": 2,
+        "title": "The Lion, the Witch, and the Wardrobe",
+        "selected": true
+      },
+      {
+        "id": 3,
+        "title": "The Prophet",
+        "selected": true
+      },
+      {
+        "id": 4,
+        "title": "Grimms' Fairy Tales",
+        "selected": true
+      }
+    ],
+    "frequency": "weekly",
+    "time": {
+      "time": "13:21",
+      "days": [0, 1, 1, 1, 1, 1, 0]
+    }
+  },
+  {
+    "id": 5,
+    "name": "Meditations",
+    "contents": [
+      {
+        "id": 1,
+        "title": "Malone Dies",
+        "selected": false
+      },
+      {
+        "id": 2,
+        "title": "The Lion, the Witch, and the Wardrobe",
+        "selected": false
+      },
+      {
+        "id": 3,
+        "title": "The Prophet",
+        "selected": false
+      },
+      {
+        "id": 4,
+        "title": "Grimms' Fairy Tales",
+        "selected": true
+      }
+    ],
+    "frequency": "once",
+    "time": {
+      "time": "2024-11-29T10:21:35.438Z"
+    }
+  },
+  {
+    "id": 6,
+    "name": "Tristram Shandy",
+    "contents": [
+      {
+        "id": 1,
+        "title": "Malone Dies",
+        "selected": true
+      },
+      {
+        "id": 2,
+        "title": "The Lion, the Witch, and the Wardrobe",
+        "selected": true
+      },
+      {
+        "id": 3,
+        "title": "The Prophet",
+        "selected": true
+      },
+      {
+        "id": 4,
+        "title": "Grimms' Fairy Tales",
+        "selected": false
+      }
+    ],
+    "frequency": "daily",
+    "time": {
+      "time": "16:21"
+    }
+  }
+]
