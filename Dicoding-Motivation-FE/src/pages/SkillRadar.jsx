@@ -35,7 +35,7 @@ export default function SkillRadar() {
     ],
     datasets: [
       {
-        label: 'Tingkat Keahlian',
+        label: 'Skill Level',
         data: [8, 7, 9, 6, 5, 7, 4, 8, 9, 3],
         backgroundColor: 'rgba(9, 154, 233, 0.2)',
         borderColor: 'rgba(9, 154, 233, 1)',

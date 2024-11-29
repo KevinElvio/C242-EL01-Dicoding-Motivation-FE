@@ -5,7 +5,7 @@ import App from "./App.jsx";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Layout from "./Layout.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
-import Survey from "./pages/Survey.jsx";
+import Survey from "./pages/Survey/Survey.jsx";
 import SkillRadar from "./pages/SkillRadar.jsx";
 import ReminderSchedule from "./pages/ReminderSchedule.jsx";
 import Streak from "./pages/Streak.jsx";
