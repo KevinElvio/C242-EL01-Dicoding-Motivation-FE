@@ -14,7 +14,8 @@ export default {
         'theme-base': '#2D3648',
         'theme-secondary': '#ABAEB6',
         'theme-shadow': '#717D96',
-        'theme-sidebar': '#EDF0F7'
+        'theme-sidebar': '#EDF0F7',
+        'button' : '#2D3E50'
       }
     },
   },
