@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import skillRadarData from '../data/skill-radar.json';
 
 ChartJS.register(
   RadialLinearScale,
@@ -21,27 +22,8 @@ ChartJS.register(
 
 export default function SkillRadar() {
   const data = {
-    labels: [
-      'Android Developer',
-      'Back-End Developer JavaScript',
-      'Data Scientist',
-      'DevOps Engineer',
-      'Front-End Web Developer',
-      'Google Cloud Professional',
-      'iOS Developer',
-      'Machine Learning Engineer',
-      'Multi-Platform App Developer',
-      'React Developer'
-    ],
-    datasets: [
-      {
-        label: 'Skill Level',
-        data: [8, 7, 9, 6, 5, 7, 4, 8, 9, 3],
-        backgroundColor: 'rgba(9, 154, 233, 0.2)',
-        borderColor: 'rgba(9, 154, 233, 1)',
-        borderWidth: 1,
-      },
-    ],
+    labels: skillRadarData.labels,
+    datasets: skillRadarData.datasets
   };
 
   const options = {

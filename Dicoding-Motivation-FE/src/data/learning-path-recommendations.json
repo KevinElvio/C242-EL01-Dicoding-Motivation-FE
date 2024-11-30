@@ -1,0 +1,54 @@
+{
+  "recommendations": [
+    {
+      "id": 1,
+      "title": "Machine Learning Specialist",
+      "description": "Pelajari dasar-dasar machine learning, algoritma pembelajaran mesin, dan implementasinya menggunakan Python dan framework populer seperti TensorFlow dan PyTorch."
+    },
+    {
+      "id": 2,
+      "title": "Data Science Path",
+      "description": "Kuasai analisis data, visualisasi, dan statistical learning untuk menjadi data scientist yang handal dengan Python dan R."
+    },
+    {
+      "id": 3,
+      "title": "Web Development",
+      "description": "Pelajari pengembangan web modern dengan React, Node.js, dan teknologi full-stack lainnya untuk membangun aplikasi web yang dinamis."
+    },
+    {
+      "id": 4,
+      "title": "Mobile App Development",
+      "description": "Kembangkan aplikasi mobile dengan React Native atau Flutter untuk iOS dan Android platforms."
+    },
+    {
+      "id": 5,
+      "title": "Cloud Computing",
+      "description": "Pelajari AWS, Azure, atau Google Cloud Platform untuk mengembangkan dan men-deploy aplikasi berbasis cloud."
+    },
+    {
+      "id": 6,
+      "title": "DevOps Engineer",
+      "description": "Kuasai tools dan praktik DevOps seperti Docker, Kubernetes, dan CI/CD untuk otomatisasi deployment."
+    },
+    {
+      "id": 7,
+      "title": "Cybersecurity Specialist",
+      "description": "Pelajari keamanan jaringan, enkripsi, dan praktik keamanan terbaik untuk melindungi sistem dan data."
+    },
+    {
+      "id": 8,
+      "title": "Backend Development",
+      "description": "Fokus pada pengembangan server-side dengan Node.js, Python, atau Java untuk membangun API dan services."
+    },
+    {
+      "id": 9,
+      "title": "Frontend Development",
+      "description": "Kuasai HTML, CSS, JavaScript, dan framework modern seperti React untuk membangun antarmuka pengguna yang menarik."
+    },
+    {
+      "id": 10,
+      "title": "Game Development",
+      "description": "Pelajari Unity atau Unreal Engine untuk mengembangkan game multi-platform yang menarik."
+    }
+  ]
+} 
