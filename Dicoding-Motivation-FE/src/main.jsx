@@ -14,6 +14,8 @@ import RedeemPoint from "./pages/Badges/RedeemPoint.jsx";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import "react-datepicker/dist/react-datepicker.css";
+
 import CreateReminder from "./pages/Reminder/CreateReminder.jsx";
 import EditReminder from "./pages/Reminder/EditReminder.jsx";
 import DetailReminder from "./pages/Reminder/DetailReminder.jsx";
