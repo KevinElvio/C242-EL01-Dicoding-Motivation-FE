@@ -1,6 +1,7 @@
 import TitleHeader from "../components/TitleHeader";
 import { useState, useEffect, useMemo } from 'react';
 import { FaFire } from 'react-icons/fa';
+import streakDayData from '../data/streak-day.json';
 
 export default function Streak() {
   const [currentDate] = useState(new Date());
@@ -13,7 +14,7 @@ export default function Streak() {
     endMonth: null
   });
   
-  const streakDays = useMemo(() => [1, 3, 4, 10, 11, 12, 13, 14,15,16,17], []);
+  const streakDays = useMemo(() => streakDayData["streak-day"], []);
 
   useEffect(() => {
     const year = currentDate.getFullYear();

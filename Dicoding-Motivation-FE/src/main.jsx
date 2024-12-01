@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import Layout from "./Layout.jsx";
 import Leaderboard from "./pages/Leaderboard.jsx";
 import Survey from "./pages/Survey/Survey.jsx";
+import LearningPathRecommendation from "./pages/Survey/LearningPathRecommendation.jsx";
 import SkillRadar from "./pages/SkillRadar.jsx";
 import ReminderSchedule from "./pages/Reminder/ReminderSchedule.jsx";
 import Streak from "./pages/Streak.jsx";
@@ -30,6 +31,7 @@ createRoot(document.getElementById("root")).render(
           <Route index element={<Leaderboard />} />
           <Route path="skill-radar" element={<SkillRadar />} />
           <Route path="survey" element={<Survey />} />
+          <Route path="learning-path-recommendation" element={<LearningPathRecommendation />} />
           <Route path="reminder-schedule" element={<ReminderSchedule />} />
           <Route path="reminder-schedule/add" element={<CreateReminder />} />
           <Route
