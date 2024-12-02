@@ -4,8 +4,8 @@ import { Link } from "react-router";
 export default function NoReminder({ show, toggleModal }) {
   return (
     <div
-      className={`absolute m-auto items-center justify-center bg-black/25 w-full h-full z-10 font-quicksand ${
-        show ? "flex" : "hidden"
+      className={`fixed top-0 left-0 w-full h-full bg-black/25 z-10 font-quicksand ${
+        show ? "flex items-center justify-center" : "hidden"
       }`}
       onClick={toggleModal}
     >
