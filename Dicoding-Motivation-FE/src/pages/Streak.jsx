@@ -92,7 +92,7 @@ export default function Streak() {
           </div>
         </div>
 
-        {/* Card Streak Info */}
+        {/* Streak Info Card */}
         <div className="bg-white rounded-lg shadow-lg p-8 h-fit text-center flex flex-col justify-center items-center lg:w-1/3">
           <h2 className="text-xl font-bold text-primary mb-4">Streak Stats</h2>
           <div className="space-y-2">
