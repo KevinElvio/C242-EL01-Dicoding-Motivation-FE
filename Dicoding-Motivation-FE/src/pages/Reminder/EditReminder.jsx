@@ -12,20 +12,13 @@ import moment from "moment";
 import InputDateTimePicker from "../../components/Input/InputDateTimePicker";
 
 export default function EditReminder() {
-  // hooks
   const { id } = useParams();
-  // const navigate = useNavigate();
-  // const { control } = useForm();
-
-  // state
   const DetailReminder = DataRemainder[id - 1];
 
   const { control, setValue, watch, handleSubmit, reset } = useForm({
     defaultValues: {
       name: DetailReminder.name,
-      days: DetailReminder.time.days
-        ? DetailReminder.time.days
-        : [0, 0, 0, 0, 0, 0, 0], // Initialize no reminders
+      days: DetailReminder.time.days || [0, 0, 0, 0, 0, 0, 0], // Initialize no reminders
       date: DetailReminder.time.time,
       frequency: DetailReminder.frequency,
       selectedContents: DetailReminder.contents.map((content) => ({
@@ -38,17 +31,31 @@ export default function EditReminder() {
 
   const selectedContents = watch("selectedContents");
 
+  // Check if all items are selected
+  const isAllSelected = selectedContents.every((content) => content.selected);
+
+  // Handle individual checkbox changes
   const handleCheckboxChange = (index) => {
     const updatedContents = [...selectedContents];
     updatedContents[index].selected = !updatedContents[index].selected;
     setValue("selectedContents", updatedContents);
   };
 
+  // Handle "Select All" checkbox change
+  const handleSelectAllChange = () => {
+    const updatedContents = selectedContents.map((content) => ({
+      ...content,
+      selected: !isAllSelected,
+    }));
+    setValue("selectedContents", updatedContents);
+  };
+
   const onSubmit = (data) => {
     console.log(data);
   };
+
   return (
-    <div className="flex flex-col flex-1  max-h-fit overflow-y-scroll relative">
+    <div className="flex flex-col flex-1 max-h-fit overflow-y-scroll relative">
       <TitleHeader title="Reminder" />
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -56,19 +63,19 @@ export default function EditReminder() {
       >
         <InputText
           label="Event Name"
-          name={"name"}
+          name="name"
           value={watch("name")}
           setValue={setValue}
           inputClassName="max-w-80"
-          // readOnly
-          // {...register("name")}
         />
 
         {/* Attach Content */}
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           <p className="font-bold text-theme-base text-lg mb-2">
             Attach Content
           </p>
+
+          {/* Individual Checkboxes */}
           {selectedContents.map((content, index) => (
             <InputCheckbox
               key={content.id}
@@ -79,6 +86,15 @@ export default function EditReminder() {
               onChange={() => handleCheckboxChange(index)}
             />
           ))}
+
+          {/* "Select All" Checkbox */}
+          <InputCheckbox
+            name="selectAll"
+            label="All"
+            value="all"
+            checked={isAllSelected}
+            onChange={handleSelectAllChange}
+          />
         </div>
 
         {/* Input Frequency */}
@@ -96,61 +112,56 @@ export default function EditReminder() {
           setValue={setValue}
         />
 
-        {/* Input TIME */}
-        {watch("frequency") == "daily" ? (
+        {/* Input Time */}
+        {watch("frequency") === "daily" ? (
           <InputTimePicker
             currentValue={moment(watch("date")).format("H:mm A")}
             label="Time"
-            name={"date"}
-            className={"w-80"}
+            name="date"
+            className="w-80"
             setValue={setValue}
           />
-        ) : watch("frequency") == "weekly" ? (
+        ) : watch("frequency") === "weekly" ? (
           <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between w-full">
             <InputTimePicker
               currentValue={moment(watch("date")).format("H:mm A")}
               label="Time"
-              name={"date"}
-              className={"w-80"}
+              name="date"
+              className="w-80"
               setValue={setValue}
             />
             <InputButtonSelectDays
               label="Days"
               name="days"
               control={control}
-              // className=""
               buttonClassName="hover:bg-blue-100"
-              // selectedClassName="border-blue-500"
             />
           </div>
-        ) : watch("frequency") == "once" ? (
+        ) : watch("frequency") === "once" ? (
           <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between">
             <InputTimePicker
               currentValue={moment(watch("date")).format("H:mm A")}
               label="Time"
-              name={"time"}
+              name="time"
               className="flex-1 max-w-80"
             />
             <InputDateTimePicker
               currentValue={watch("date")}
               setValue={setValue}
               label="Date"
-              name={"date"}
-              // className="flex-1 max-w-80"
+              name="date"
             />
           </div>
-        ) : (
-          ""
-        )}
+        ) : null}
 
         <div className="flex gap-4 justify-end self-end">
           <ButtonDefault
-            color={"white"}
-            text={"Discard"}
+            color="white"
+            text="Discard"
             type="reset"
             action={() => reset()}
           />
-          <ButtonDefault color={"base"} text="Save" type="submit" />
+          <ButtonDefault color="base" text="Save" type="submit" />
         </div>
       </form>
     </div>

@@ -45,9 +45,22 @@ export default function CreateReminder() {
 
   const selectedContents = watch("selectedContents");
 
+  // Check if all items are selected
+  const isAllSelected = selectedContents.every((content) => content.selected);
+
+  // Handle individual checkbox changes
   const handleCheckboxChange = (index) => {
     const updatedContents = [...selectedContents];
     updatedContents[index].selected = !updatedContents[index].selected;
+    setValue("selectedContents", updatedContents);
+  };
+
+  // Handle "Select All" checkbox change
+  const handleSelectAllChange = () => {
+    const updatedContents = selectedContents.map((content) => ({
+      ...content,
+      selected: !isAllSelected,
+    }));
     setValue("selectedContents", updatedContents);
   };
 
@@ -80,10 +93,12 @@ export default function CreateReminder() {
         />
 
         {/* Attach Content */}
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           <p className="font-bold text-theme-base text-lg mb-2">
             Attach Content
           </p>
+
+          {/* Individual Checkboxes */}
           {selectedContents.map((content, index) => (
             <InputCheckbox
               key={content.id}
@@ -94,6 +109,15 @@ export default function CreateReminder() {
               onChange={() => handleCheckboxChange(index)}
             />
           ))}
+
+          {/* "Select All" Checkbox */}
+          <InputCheckbox
+            name="selectAll"
+            label="All"
+            value="all"
+            checked={isAllSelected}
+            onChange={handleSelectAllChange}
+          />
         </div>
 
         {/* Input Frequency */}

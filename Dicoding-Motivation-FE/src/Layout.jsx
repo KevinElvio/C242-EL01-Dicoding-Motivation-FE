@@ -3,13 +3,14 @@ import NavigationBar from "./components/NavigationBar";
 import Sidebar from "./components/Sidebar";
 
 export default function Layout() {
-  // console.log(active_path);
   return (
-    <div className="flex flex-col w-full h-screen font-base max-h-screen">
+    <div className="flex flex-col w-full h-screen font-base">
       <NavigationBar />
-      <div className="w-full h-fit flex-1 flex items-stretch overflow-hidden">
+      <div className="w-full flex-1 flex items-stretch overflow-clip">
         <Sidebar />
-        <Outlet />
+        <div className="flex-1 max-h-fit overflow-y-hidden">
+          <Outlet />
+        </div>
       </div>
     </div>
   );
