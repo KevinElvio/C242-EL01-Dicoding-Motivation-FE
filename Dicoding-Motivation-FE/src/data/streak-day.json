@@ -1,9 +1,5 @@
 {
-  "users": [
-    {
-      "name": "Sidiq Permana",
-      "current_streak": 10,
-      "longest_streak": 15
-    }
-  ]
+  "name": "Sidiq Permana",
+  "current_streak": 10,
+  "longest_streak": 15
 }
