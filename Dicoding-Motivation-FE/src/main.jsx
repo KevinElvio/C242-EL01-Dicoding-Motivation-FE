@@ -31,7 +31,10 @@ createRoot(document.getElementById("root")).render(
           <Route index element={<Leaderboard />} />
           <Route path="skill-radar" element={<SkillRadar />} />
           <Route path="survey" element={<Survey />} />
-          <Route path="learning-path-recommendation" element={<LearningPathRecommendation />} />
+          <Route
+            path="learning-path-recommendation"
+            element={<LearningPathRecommendation />}
+          />
           <Route path="reminder-schedule" element={<ReminderSchedule />} />
           <Route path="reminder-schedule/add" element={<CreateReminder />} />
           <Route

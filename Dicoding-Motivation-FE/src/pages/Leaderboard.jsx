@@ -1,15 +1,29 @@
 import TitleHeader from "../components/TitleHeader";
 import PointsLeaderboard from "../data/person.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LeaderboardItem from "../components/ItemList/LeaderboardItem";
+import axios from "axios";
+// import dotenv from "dotenv";
+
+// dotenv.config();
 
 export default function Leaderboard() {
   const [Filter, setFilter] = useState("daily");
+  const [PointsLeaderboard, setPointsLeaderboard] = useState([]);
   //   console.log(PointsLeaderboard["daily"]);
 
   const changeFilter = (e) => {
     setFilter(e);
   };
+
+  useEffect(() => {
+    axios.get(import.meta.env.VITE_API_URL + "leaderboards").then((res) => {
+      // console.log(res.data);
+      setPointsLeaderboard(res.data.data);
+    });
+  }, []);
+
+  // console.log(PointsLeaderboard);
 
   return (
     <div className="flex flex-col w-full max-h-fit overflow-y-scroll">
@@ -52,7 +66,7 @@ export default function Leaderboard() {
 
         {/* Ranking Leaderboard */}
         <div className="flex flex-col gap-8">
-          {PointsLeaderboard[Filter].map((person, index) => (
+          {PointsLeaderboard.map((person, index) => (
             <LeaderboardItem person={person} key={index} />
           ))}
         </div>
