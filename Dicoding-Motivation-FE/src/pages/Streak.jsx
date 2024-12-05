@@ -1,112 +1,47 @@
 import TitleHeader from "../components/TitleHeader";
-import { useState, useEffect, useMemo } from 'react';
-import { FaFire } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
 import streakDayData from '../data/streak-day.json';
+import { FaFire } from 'react-icons/fa';
 
 export default function Streak() {
-  const [currentDate] = useState(new Date());
-  const [daysInMonth, setDaysInMonth] = useState([]);
-  const [consecutiveStreak, setConsecutiveStreak] = useState({
-    count: 0,
-    startDate: null,
-    endDate: null,
-    startMonth: null,
-    endMonth: null
-  });
-  
-  const streakDays = useMemo(() => streakDayData["streak-day"], []);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const totalDays = new Date(year, month + 1, 0).getDate();
-    
-    let maxStreak = { count: 0, startDate: null, endDate: null, startMonth: null, endMonth: null };
-    let currentStreak = { count: 0, startDate: null, endDate: null, startMonth: null, endMonth: null };
-    
-    streakDays.sort((a, b) => a - b).forEach((day, index) => {
-      if (index === 0 || day !== streakDays[index - 1] + 1) {
-        currentStreak = { 
-          count: 1, 
-          startDate: day, 
-          endDate: day,
-          startMonth: new Date(year, month).toLocaleString('default', { month: 'short' }),
-          endMonth: new Date(year, month).toLocaleString('default', { month: 'short' })
-        };
-      } else {
-        currentStreak.count++;
-        currentStreak.endDate = day;
-        currentStreak.endMonth = new Date(year, month).toLocaleString('default', { month: 'short' });
-      }
-      
-      if (currentStreak.count > maxStreak.count) {
-        maxStreak = { ...currentStreak };
-      }
-    });
-    
-    setConsecutiveStreak(maxStreak);
-    
-    const days = Array.from({ length: totalDays }, (_, i) => ({
-      date: i + 1,
-      hasStreak: streakDays.includes(i + 1),
-      isConsecutive: i + 1 >= maxStreak.startDate && i + 1 <= maxStreak.endDate
-    }));
-    
-    setDaysInMonth(days);
-  }, [currentDate, streakDays]);
+    setUserData(streakDayData);
+  }, []);
 
   return (
     <div className="flex flex-col w-full max-h-fit overflow-y-scroll">
       <TitleHeader title="Streak" />
-      <div className="p-6 flex flex-col lg:flex-row gap-6">
-        {/* Calendar Card */}
-        <div className="bg-white rounded-lg shadow-lg p-4 lg:w-2/3">
-          <div className="grid grid-cols-7 gap-2">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-              <div key={day} className="text-center font-medium text-gray-600 text-sm">
-                {day}
-              </div>
-            ))}
-            {Array.from({ length: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay() }).map((_, index) => (
-              <div key={`empty-${index}`} />
-            ))}
-            {daysInMonth.map((day) => (
-              <div
-                key={day.date}
-                className={`aspect-square flex items-center justify-center relative ${
-                  day.isConsecutive ? 'bg-orange-100/85' : ''
-                }`}
-              >
-                {day.hasStreak && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-6 h-6 rounded-full bg-yellow-300 flex items-center justify-center">
-                      <FaFire className="text-orange-500 text-sm" />
-                    </div>
-                  </div>
-                )}
-                <span className={`z-10 text-sm ${day.hasStreak ? 'text-white' : 'text-gray-600'}`}>
-                  {day.date}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+      {userData && (
+        <div className="p-6 flex flex-col items-center bg-gradient-to-r from-orange-50 via-white to-orange-50 rounded-3xl shadow-xl lg:w-2/3 mx-auto mt-4 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-20 h-20 bg-orange-200 opacity-30 rounded-full blur-xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-0 w-32 h-32 bg-yellow-300 opacity-20 rounded-full blur-xl"></div>
 
-        {/* Card Streak Info */}
-        <div className="bg-white rounded-lg shadow-lg p-8 h-fit text-center flex flex-col justify-center items-center lg:w-1/3">
-          <h2 className="text-xl font-bold text-primary mb-4">Streak Stats</h2>
-          <div className="space-y-2">
-            <p className="text-2xl font-bold text-orange-500">
-              {consecutiveStreak.count} Days
-            </p>
-            <p className="text-base font-bold text-gray-600">
-              {consecutiveStreak.startDate && 
-                `${consecutiveStreak.startDate} ${consecutiveStreak.startMonth} - ${consecutiveStreak.endDate} ${consecutiveStreak.endMonth}`
-              }
-            </p>
+          <h2 className="text-2xl font-extrabold text-primary mb-6 flex items-center z-10">
+            <FaFire className="text-orange-500 mr-2 animate-bounce" />
+            {userData.name}
+          </h2>
+
+          <div className="bg-gradient-to-r from-orange-400 to-orange-500 text-white px-6 py-2 rounded-full text-lg font-semibold shadow-lg mb-4">
+            🔥 Current Streak: <span>{userData.current_streak}</span> days
+          </div>
+
+          <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-6 py-2 rounded-full text-lg font-semibold shadow-lg mb-6">
+            🏆 Longest Streak: <span>{userData.longest_streak}</span> days
+          </div>
+
+          <p className="text-center text-gray-800 italic z-10">
+            Amazing work, <span className="font-bold text-orange-600">{userData.name}</span>! Each day counts toward something bigger.
+          </p>
+
+          <div className="w-16 h-1 bg-orange-400 rounded-full my-4"></div>
+
+          <div className="flex items-center justify-center mt-4">
+            <FaFire className="text-orange-500 text-5xl animate-pulse" />
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
