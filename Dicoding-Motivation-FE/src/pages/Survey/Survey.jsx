@@ -1,6 +1,7 @@
 import TitleHeader from "../../components/TitleHeader";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; // Add axios for API requests
 
 export default function Survey() {
   const navigate = useNavigate();
@@ -8,10 +9,27 @@ export default function Survey() {
   const [customLanguage, setCustomLanguage] = useState("");
   const [customSkillInput, setCustomSkillInput] = useState("");
   const [customLanguageInput, setCustomLanguageInput] = useState("");
+  const [githubUsername, setGithubUsername] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/new-features/learning-path-recommendation');
+
+    const skill = customSkill === "Other" ? customSkillInput : customSkill;
+    const language = customLanguage === "Other" ? customLanguageInput : customLanguage;
+
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/recommend", {
+        skill,
+        language,
+        github_username: githubUsername,
+      });
+
+      // Assuming the response contains recommendations
+      const recommendations = response.data.recommendations;
+      navigate('/new-features/learning-path-recommendation', { state: { recommendations } });
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
+    }
   };
 
   return (
@@ -22,8 +40,8 @@ export default function Survey() {
           <form className="space-y-8" onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div>
-                <label 
-                  htmlFor="skill" 
+                <label
+                  htmlFor="skill"
                   className="block text-base font-medium text-gray-700 mb-2"
                 >
                   Select your skill
@@ -34,7 +52,7 @@ export default function Survey() {
                   onChange={(e) => {
                     setCustomSkill(e.target.value);
                     if (e.target.value !== "Other") {
-                      setCustomSkillInput(""); // Reset input if not "Other"
+                      setCustomSkillInput("");
                     }
                   }}
                   required
@@ -59,8 +77,8 @@ export default function Survey() {
               </div>
 
               <div>
-                <label 
-                  htmlFor="programmingLanguage" 
+                <label
+                  htmlFor="programmingLanguage"
                   className="block text-base font-medium text-gray-700 mb-2"
                 >
                   Select your preferred programming language
@@ -96,8 +114,8 @@ export default function Survey() {
               </div>
 
               <div>
-                <label 
-                  htmlFor="github" 
+                <label
+                  htmlFor="github"
                   className="block text-base font-medium text-gray-700 mb-2"
                 >
                   Enter your Github username
@@ -107,6 +125,8 @@ export default function Survey() {
                   id="github"
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-theme-base focus:border-theme-base"
                   placeholder="e.g., jhondoe223"
+                  value={githubUsername}
+                  onChange={(e) => setGithubUsername(e.target.value)}
                   required
                 />
               </div>
