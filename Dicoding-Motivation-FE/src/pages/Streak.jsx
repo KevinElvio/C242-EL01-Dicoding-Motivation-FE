@@ -1,14 +1,37 @@
 import TitleHeader from "../components/TitleHeader";
 import { useState, useEffect } from 'react';
-import streakDayData from '../data/streak-day.json';
 import { FaFire } from 'react-icons/fa';
 
 export default function Streak() {
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setUserData(streakDayData);
+    fetch("http://localhost:8000/your-endpoint")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setUserData(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="flex flex-col w-full max-h-fit overflow-y-scroll">

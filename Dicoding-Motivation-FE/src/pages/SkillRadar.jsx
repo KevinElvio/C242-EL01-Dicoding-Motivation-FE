@@ -9,7 +9,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import skillRadarData from '../data/skill-radar.json';
+import { useState, useEffect } from 'react';
 
 ChartJS.register(
   RadialLinearScale,
@@ -21,12 +21,42 @@ ChartJS.register(
 );
 
 export default function SkillRadar() {
-  const data = {
-    labels: skillRadarData.radar_data.labels,
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/your-endpoint")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setData(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  const radarData = {
+    labels: data.radar_data.labels,
     datasets: [
       {
         label: "Skill Level",
-        data: skillRadarData.radar_data.values,
+        data: data.radar_data.values,
         backgroundColor: "rgba(9, 154, 233, 0.2)",
         borderColor: "rgba(9, 154, 233, 1)",
         borderWidth: 1,
@@ -41,7 +71,7 @@ export default function SkillRadar() {
           display: true,
         },
         suggestedMin: 0,
-        suggestedMax: Math.max(...skillRadarData.radar_data.max_values),
+        suggestedMax: Math.max(...data.radar_data.max_values),
         ticks: {
           stepSize: 0.2,
         },
@@ -65,14 +95,14 @@ export default function SkillRadar() {
       <TitleHeader title="Skill Radar" />
       <div className="p-4 flex flex-col lg:flex-row gap-4">
         <div className="bg-white rounded-lg shadow-lg py-1 px-6 w-full lg:w-2/3 h-[425px] flex justify-center items-center">
-          <Radar data={data} options={options} />
+          <Radar data={radarData} options={options} />
         </div>
 
         {/* Recommended Courses Section */}
         <div className="bg-white rounded-lg shadow-lg p-6 lg:w-1/3">
           <h2 className="text-2xl font-bold text-primary mb-4">Recommended Courses</h2>
           <div className="space-y-4">
-            {skillRadarData.recommended_courses.map((course, index) => (
+            {data.recommended_courses.map((course, index) => (
               <div key={index} className="border p-4 rounded-lg shadow-md">
                 <h3 className="text-sm font-semibold">{course}</h3>
               </div>
