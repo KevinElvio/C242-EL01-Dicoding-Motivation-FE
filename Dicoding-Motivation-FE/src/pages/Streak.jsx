@@ -8,7 +8,7 @@ export default function Streak() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8000/your-endpoint")
+    fetch('https://new-backend-989557955176.asia-southeast2.run.app/users/streak/2')
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not ok");
@@ -16,7 +16,11 @@ export default function Streak() {
         return res.json();
       })
       .then((data) => {
-        setUserData(data);
+        if (data.message === "getStreakSuccess") {
+          setUserData(data.data[0]);
+        } else {
+          throw new Error("Data tidak valid");
+        }
         setLoading(false);
       })
       .catch((error) => {
@@ -43,7 +47,7 @@ export default function Streak() {
 
           <h2 className="text-2xl font-extrabold text-primary mb-6 flex items-center z-10">
             <FaFire className="text-orange-500 mr-2 animate-bounce" />
-            {userData.name}
+            {userData.username}
           </h2>
 
           <div className="bg-gradient-to-r from-orange-400 to-orange-500 text-white px-6 py-2 rounded-full text-lg font-semibold shadow-lg mb-4">
@@ -55,7 +59,7 @@ export default function Streak() {
           </div>
 
           <p className="text-center text-gray-800 italic z-10">
-            Amazing work, <span className="font-bold text-orange-600">{userData.name}</span>! Each day counts toward something bigger.
+            Amazing work, <span className="font-bold text-orange-600">{userData.username}</span>! Each day counts toward something bigger.
           </p>
 
           <div className="w-16 h-1 bg-orange-400 rounded-full my-4"></div>
