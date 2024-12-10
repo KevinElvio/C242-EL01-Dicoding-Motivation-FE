@@ -13,11 +13,16 @@ export default function Survey() {
   const [githubUsername, setGithubUsername] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
+    // Check if the user has previously submitted the survey
     const surveyStatus = localStorage.getItem("hasSubmitted");
-    if (surveyStatus) {
+    const storedRecommendations = localStorage.getItem("recommendations");
+
+    if (surveyStatus && storedRecommendations) {
       setHasSubmitted(true);
+      setRecommendations(JSON.parse(storedRecommendations)); // load recommendations from localStorage
     }
   }, []);
 
@@ -35,7 +40,12 @@ export default function Survey() {
       });
 
       const recommendations = response.data.recommendations;
+
+      
       localStorage.setItem("hasSubmitted", "true");
+      localStorage.setItem("recommendations", JSON.stringify(recommendations));
+
+    
       navigate('/new-features/learning-path-recommendation', { state: { recommendations } });
     } catch (error) {
       console.error("Error fetching recommendations:", error);
@@ -49,7 +59,9 @@ export default function Survey() {
   const confirmEdit = () => {
     setShowConfirmPopup(false);
     localStorage.removeItem("hasSubmitted");
+    localStorage.removeItem("recommendations"); 
     setHasSubmitted(false);
+    setRecommendations([]);
   };
 
   const cancelEdit = () => {
@@ -68,8 +80,8 @@ export default function Survey() {
         {showConfirmPopup && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold mb-4">Konfirmasi Edit</h2>
-              <p>Apakah Anda yakin ingin mengedit survei?</p>
+              <h2 className="text-lg font-bold mb-4">Edit Survey Recommendation</h2>
+              <p>Are you sure you want to edit the survey?</p>
               <div className="mt-4 flex justify-end">
                 <button
                   className="bg-button text-white py-2 px-4 rounded-md mr-2"
@@ -87,7 +99,8 @@ export default function Survey() {
             </div>
           </div>
         )}
-        <LearningPathRecommendation />
+        {/* Pass recommendations to the component */}
+        <LearningPathRecommendation recommendations={recommendations} />
       </div>
     );
   }
