@@ -1,6 +1,7 @@
 import TitleHeader from "../../components/TitleHeader";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import LearningPathRecommendation from "./LearningPathRecommendation";
 
 export default function Survey() {
@@ -9,7 +10,7 @@ export default function Survey() {
   const [customLanguage, setCustomLanguage] = useState("");
   const [customSkillInput, setCustomSkillInput] = useState("");
   const [customLanguageInput, setCustomLanguageInput] = useState("");
-  const [github, setGithub] = useState("");
+  const [githubUsername, setGithubUsername] = useState("");
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
 
@@ -20,38 +21,25 @@ export default function Survey() {
     }
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const surveyData = {
-      skill: customSkill,
-      customSkill: customSkill === "Other" ? customSkillInput : undefined,
-      programmingLanguage: customLanguage,
-      customLanguage: customLanguage === "Other" ? customLanguageInput : undefined,
-      github: github,
-    };
 
-    fetch(`http://localhost:8000/users/submit-survey`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(surveyData),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log("Survey submitted successfully:", data);
-        localStorage.setItem("hasSubmitted", "true");
-        setHasSubmitted(true);
-      })
-      .catch((error) => {
-        console.error("Error submitting survey:", error);
+    const skill = customSkill === "Other" ? customSkillInput : customSkill;
+    const language = customLanguage === "Other" ? customLanguageInput : customLanguage;
+
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/recommend", {
+        skill,
+        language,
+        github_username: githubUsername,
       });
+
+      const recommendations = response.data.recommendations;
+      localStorage.setItem("hasSubmitted", "true");
+      navigate('/new-features/learning-path-recommendation', { state: { recommendations } });
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
+    }
   };
 
   const handleEdit = () => {
@@ -60,8 +48,8 @@ export default function Survey() {
 
   const confirmEdit = () => {
     setShowConfirmPopup(false);
-    setHasSubmitted(false);
     localStorage.removeItem("hasSubmitted");
+    setHasSubmitted(false);
   };
 
   const cancelEdit = () => {
@@ -71,7 +59,6 @@ export default function Survey() {
   if (hasSubmitted) {
     return (
       <div className="flex flex-col w-full max-h-fit overflow-y-scroll">
-        <TitleHeader title="Learning Path Recommendation" />
         <button
           className="mt-4 bg-button text-white py-2 px-4 rounded-md self-end w-auto mr-6"
           onClick={handleEdit}
@@ -81,8 +68,8 @@ export default function Survey() {
         {showConfirmPopup && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold mb-4">Edit Survey</h2>
-              <p>Are you sure you want to edit the survey?</p>
+              <h2 className="text-lg font-bold mb-4">Konfirmasi Edit</h2>
+              <p>Apakah Anda yakin ingin mengedit survei?</p>
               <div className="mt-4 flex justify-end">
                 <button
                   className="bg-button text-white py-2 px-4 rounded-md mr-2"
@@ -100,10 +87,7 @@ export default function Survey() {
             </div>
           </div>
         )}
-        <div className="p-6">
-          <p>You have already submitted the survey. Here are your recommendations:</p>
-          <LearningPathRecommendation />
-        </div>
+        <LearningPathRecommendation />
       </div>
     );
   }
@@ -192,8 +176,8 @@ export default function Survey() {
                   id="github"
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-theme-base focus:border-theme-base"
                   placeholder="e.g., jhondoe223"
-                  value={github}
-                  onChange={(e) => setGithub(e.target.value)}
+                  value={githubUsername}
+                  onChange={(e) => setGithubUsername(e.target.value)}
                   required
                 />
               </div>
