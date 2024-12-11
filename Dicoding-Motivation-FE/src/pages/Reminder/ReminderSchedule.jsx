@@ -26,7 +26,7 @@ export default function ReminderSchedule() {
   console.log(data);
 
   return (
-    <div className="flex flex-col max-h-fit overflow-y-scroll relative">
+    <div className="flex flex-col max-h-fit relative">
       <TitleHeader title="Reminder" />
 
       {/* No Reminder Modal */}
