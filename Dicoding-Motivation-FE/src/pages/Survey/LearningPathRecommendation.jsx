@@ -1,13 +1,9 @@
-import TitleHeader from "../../components/TitleHeader";
-import { useLocation } from "react-router-dom";
-
-export default function LearningPathRecommendation() {
-  const location = useLocation();
-  const { recommendations } = location.state || { recommendations: [] };
-
+export default function LearningPathRecommendation({ recommendations }) {
   return (
-    <div className="flex flex-col w-full max-h-fit overflow-y-scroll">
-      <TitleHeader title="Learning Path Recommendation" />
+    <div className="flex flex-col w-full max-h-fit overflow-y-auto">
+      <h1 className="text-3xl font-bold text-center my-4" style={{ color: '#2D3E50' }}>
+        Learning Path Recommendation
+      </h1>
       <div className="space-y-4 mx-6 mb-8">
         {recommendations.length > 0 ? (
           recommendations.map((rec, index) => (
