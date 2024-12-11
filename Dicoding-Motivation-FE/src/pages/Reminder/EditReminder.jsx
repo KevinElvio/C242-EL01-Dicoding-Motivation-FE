@@ -1,59 +1,130 @@
 import { useParams } from "react-router";
 import TitleHeader from "../../components/TitleHeader";
 import InputText from "../../components/Input/InputText";
-import DataRemainder from "../../data/reminder-schedule.json";
+// import DataRemainder from "../../data/reminder-schedule.json";
 import ButtonDefault from "../../components/Button/ButtonDefault";
-import InputCheckbox from "../../components/Input/InputCheckBox";
 import { useForm } from "react-hook-form";
 import InputButtonSelect from "../../components/Input/InputButtonSelect";
 import InputTimePicker from "../../components/Input/InputTimePicker";
 import InputButtonSelectDays from "../../components/Input/InputButtonSelectDays";
 import moment from "moment";
 import InputDateTimePicker from "../../components/Input/InputDateTimePicker";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function EditReminder() {
   const { id } = useParams();
-  const DetailReminder = DataRemainder[id - 1];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  // const [data, setData] = useState()
 
   const { control, setValue, watch, handleSubmit, reset } = useForm({
-    defaultValues: {
-      name: DetailReminder.name,
-      days: DetailReminder.time.days || [0, 0, 0, 0, 0, 0, 0], // Initialize no reminders
-      date: DetailReminder.time.time,
-      frequency: DetailReminder.frequency,
-      selectedContents: DetailReminder.contents.map((content) => ({
-        id: content.id,
-        title: content.title,
-        selected: content.selected,
-      })),
-    },
+    // defaultValues: {
+    //   name: DetailReminder.name,
+    //   days: DetailReminder.time.days || [0, 0, 0, 0, 0, 0, 0], // Initialize no reminders
+    //   date: DetailReminder.time.time,
+    //   frequency: DetailReminder.frequency,
+    // },
   });
 
-  const selectedContents = watch("selectedContents");
+  useEffect(() => {
+    fetch(import.meta.env.VITE_API_URL + `users/2/reminders/${id}`)
+      .then((res) => {
+        console.log(res);
 
-  // Check if all items are selected
-  const isAllSelected = selectedContents.every((content) => content.selected);
+        return res.json();
+      })
+      .then((res) => {
+        const reminder = res.data[0];
 
-  // Handle individual checkbox changes
-  const handleCheckboxChange = (index) => {
-    const updatedContents = [...selectedContents];
-    updatedContents[index].selected = !updatedContents[index].selected;
-    setValue("selectedContents", updatedContents);
-  };
+        // Combine time string with a reference date
+        const parsedTime = reminder.time
+          ? moment(reminder.time, "HH:mm").toDate() // Use "HH:mm" format to parse
+          : null;
 
-  // Handle "Select All" checkbox change
-  const handleSelectAllChange = () => {
-    const updatedContents = selectedContents.map((content) => ({
-      ...content,
-      selected: !isAllSelected,
-    }));
-    setValue("selectedContents", updatedContents);
-  };
+        reset({
+          name: reminder.name,
+          frequency: reminder.frequency,
+          time: parsedTime, // Use the parsed time
+          date: reminder.date ?? moment().format("yyyy-MM-DD"),
+          days: reminder.days,
+        });
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+
+        setError(error);
+        setLoading(false);
+      });
+  }, [id, reset]);
 
   const onSubmit = (data) => {
-    console.log(data);
+    const submiting_toast = toast.loading("submiting reminder...");
+    if (!watch("frequency")) {
+      toast.error("Please fill all required field!", { autoClose: 2000 });
+      return;
+    }
+    if (watch("frequency") == "weekly" && watch("days").length < 1) {
+      toast.error("Please fill all required field!", { autoClose: 2000 });
+      return;
+    }
+    fetch(import.meta.env.VITE_API_URL + `users/2/reminders/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: data.name,
+        frequency: data.frequency,
+        time: moment(data.time).format("HH:mm"),
+        date: data.date
+          ? moment(data.date).format("yyyy-MM-DD")
+          : moment().format("yyyy-MM-DD"),
+        days: data.days ?? null,
+        course_ids: [2],
+      }),
+    })
+      .then(async (res) => {
+        const response = await res.json();
+        if (response.authUrl) {
+          window.open(response.authUrl, "_blank", "noopener,noreferrer");
+          return;
+        }
+        if (res.status == 200) {
+          toast.update(submiting_toast, {
+            render: response.message,
+            isLoading: false,
+            type: "success",
+            autoClose: 2000,
+          });
+          return;
+        }
+        toast.update(submiting_toast, {
+          render: response.message,
+          isLoading: false,
+          type: "error",
+          autoClose: 2000,
+        });
+      })
+      .catch((err) => {
+        toast.update(submiting_toast, {
+          render: err.message,
+          isLoading: false,
+          type: "error",
+          autoClose: 2000,
+        });
+      });
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
   return (
     <div className="flex flex-col flex-1 max-h-fit overflow-y-scroll relative">
       <TitleHeader title="Reminder" />
@@ -69,42 +140,14 @@ export default function EditReminder() {
           inputClassName="max-w-80"
         />
 
-        {/* Attach Content */}
-        <div className="flex flex-col">
-          <p className="font-bold text-theme-base text-lg mb-2">
-            Attach Content
-          </p>
-
-          {/* Individual Checkboxes */}
-          {selectedContents.map((content, index) => (
-            <InputCheckbox
-              key={content.id}
-              name={`selectedContents[${index}]`}
-              label={content.title}
-              value={content.id}
-              checked={content.selected}
-              onChange={() => handleCheckboxChange(index)}
-            />
-          ))}
-
-          {/* "Select All" Checkbox */}
-          <InputCheckbox
-            name="selectAll"
-            label="All"
-            value="all"
-            checked={isAllSelected}
-            onChange={handleSelectAllChange}
-          />
-        </div>
-
         {/* Input Frequency */}
         <InputButtonSelect
           name="frequency"
           label="Select a Category"
           options={[
-            { value: "daily", label: "Daily" },
-            { value: "weekly", label: "Weekly" },
-            { value: "once", label: "Once" },
+            { value: "Daily", label: "Daily" },
+            { value: "Weekly", label: "Weekly" },
+            { value: "Once", label: "Once" },
           ]}
           currentValue={watch("frequency")}
           buttonClassName="hover:bg-blue-100"
@@ -113,20 +156,20 @@ export default function EditReminder() {
         />
 
         {/* Input Time */}
-        {watch("frequency") === "daily" ? (
+        {watch("frequency") === "Daily" ? (
           <InputTimePicker
-            currentValue={moment(watch("date")).format("H:mm A")}
+            currentValue={watch("time")}
             label="Time"
-            name="date"
+            name={"time"}
             className="w-80"
             setValue={setValue}
           />
-        ) : watch("frequency") === "weekly" ? (
+        ) : watch("frequency") === "Weekly" ? (
           <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between w-full">
             <InputTimePicker
-              currentValue={moment(watch("date")).format("H:mm A")}
+              currentValue={moment(watch("time")).format("H:mm A")}
               label="Time"
-              name="date"
+              name="time"
               className="w-80"
               setValue={setValue}
             />
@@ -135,12 +178,13 @@ export default function EditReminder() {
               name="days"
               control={control}
               buttonClassName="hover:bg-blue-100"
+              defaultValueControl={watch("days")}
             />
           </div>
-        ) : watch("frequency") === "once" ? (
+        ) : watch("frequency") === "Once" ? (
           <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between">
             <InputTimePicker
-              currentValue={moment(watch("date")).format("H:mm A")}
+              currentValue={moment(watch("time")).format("H:mm A")}
               label="Time"
               name="time"
               className="flex-1 max-w-80"

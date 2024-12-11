@@ -17,13 +17,13 @@ export default function InputTimePicker({
         {label}
       </label>
       <DatePicker
+        selected={currentValue instanceof Date ? currentValue : null}
         onChange={(date) => setValue(name, date)}
         showTimeSelect
         showTimeSelectOnly
         timeIntervals={15}
-        dateFormat="h:mm aa"
+        dateFormat="HH:mm a"
         showTimeCaption={false}
-        value={currentValue}
         readOnly={readOnly}
         className="px-4 py-2 outline-none border border-theme-base rounded-md"
         // timeClassName={"w-80"}
