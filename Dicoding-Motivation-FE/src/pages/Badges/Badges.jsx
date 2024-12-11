@@ -1,6 +1,5 @@
 import { FaStar } from "react-icons/fa6";
-import BadgeList from "../../data/badge.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleHeader from "../../components/TitleHeader";
 import BadgeItem from "../../components/ItemList/BadgeItem";
 import { toast } from "react-toastify";
@@ -8,24 +7,68 @@ import { Link } from "react-router";
 
 export default function Badges() {
   const [UserPoint, setUserPoint] = useState(800);
-  const [Data, setData] = useState(BadgeList);
+  const [Data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const claimAction = (point, index) => {
-    setUserPoint(UserPoint - point);
-    // const new_data = Data.splice(index, index)
-    setData((prevItems) =>
-      prevItems.map((item, idx) =>
-        idx === index ? { ...item, claimed: true } : item
-      )
-    );
-
-    toast.success("Badges successfully claimed!", {
-      autoClose: 2000,
-    });
+  const claimAction = (point) => {
+    const claim_action = toast.loading("Claiming badges...");
+    fetch(import.meta.env.VITE_API_URL + `users/1/badges/1`, {
+      method: "POST",
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        toast.update(claim_action, {
+          render: res.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+        setData(res.data);
+      })
+      .catch((err) => {
+        toast.update(claim_action, {
+          type: "error",
+          isLoading: false,
+          render: err.message,
+          autoClose: 2000,
+        });
+      });
+    setUserPoint(UserPoint + point);
   };
 
+  useEffect(() => {
+    // axios.get(import.meta.env.VITE_API_URL + "leaderboards").then((res) => {
+    //   // console.log(res.data);
+    // });
+    fetch(import.meta.env.VITE_API_URL + "users/1/badges")
+      .then((res) => {
+        return res.json();
+        // setPointsLeaderboard(res.data.data);
+      })
+      .then((res) => {
+        // console.log(res);
+        setData(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    <div className="flex flex-col w-full max-h-fit overflow-y-scroll">
+    <div className="flex flex-col w-full max-h-fit relative">
       <TitleHeader title="Badges" />
       <div className="flex flex-col gap-8 px-12 font-quicksand font-semibold my-8">
         {/* Redeem and Points count */}

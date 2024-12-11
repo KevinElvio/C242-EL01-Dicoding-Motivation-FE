@@ -1,24 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TitleHeader from "../../components/TitleHeader";
 import { FaStar } from "react-icons/fa6";
 import RedeemPointCard from "../../components/Card/RedeemPointCard";
-import RedeemPointList from "../../data/redeem-point.json";
+// import RedeemPointList from "../../data/redeem-point.json";
 import { toast } from "react-toastify";
 import RedeemPointModal from "../../components/Modal/RedeemPointModal";
 
 export default function RedeemPoint() {
   const [UserPoint, setUserPoint] = useState(800);
-  const [RedeemData, setRedeemData] = useState(RedeemPointList);
+  const [RedeemData, setRedeemData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedRedeem, setSelectedRedeem] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const claimPointAction = (point, index) => {
-    const updatedRedeemData = RedeemData.filter((_, i) => i !== index);
-    setRedeemData(updatedRedeemData);
-    setUserPoint(UserPoint + point);
-    toast.success("Redeem points success!", {
-      autoClose: 2000,
-    });
+  const claimPointAction = (point, item_id) => {
+    // const updatedRedeemData = RedeemData.filter((_, i) => i !== index);
+    const claim_point_toast = toast.loading("redeem point...");
+    fetch(import.meta.env.VITE_API_URL + `users/1/redeems/${item_id}`, {
+      method: "POST",
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        toast.update(claim_point_toast, {
+          type: "success",
+          isLoading: false,
+          render: res.message,
+          autoClose: 2000,
+        });
+        setRedeemData(res.data);
+      })
+      .catch((err) => {
+        toast.update(claim_point_toast, {
+          type: "error",
+          isLoading: false,
+          render: err.message,
+          autoClose: 2000,
+        });
+      });
+    setUserPoint(UserPoint - point);
   };
 
   const openModal = (redeem, index) => {
@@ -37,6 +59,34 @@ export default function RedeemPoint() {
     }
     closeModal();
   };
+
+  useEffect(() => {
+    // axios.get(import.meta.env.VITE_API_URL + "leaderboards").then((res) => {
+    //   // console.log(res.data);
+    // });
+    fetch(import.meta.env.VITE_API_URL + "users/1/redeems")
+      .then((res) => {
+        return res.json();
+        // setPointsLeaderboard(res.data.data);
+      })
+      .then((res) => {
+        // console.log(res);
+        setRedeemData(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="flex flex-col w-full max-h-fit overflow-y-scroll">
@@ -67,7 +117,6 @@ export default function RedeemPoint() {
             <RedeemPointCard
               key={index}
               redeem_point={redeem_point}
-              index={index}
               className="2xl:col-span-2 xl:col-span-3 lg:col-span-4 col-span-6"
               redeemAction={openModal}
             />

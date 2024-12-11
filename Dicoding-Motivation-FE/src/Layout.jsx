@@ -6,9 +6,9 @@ export default function Layout() {
   return (
     <div className="flex flex-col w-full h-screen font-base">
       <NavigationBar />
-      <div className="w-full flex-1 flex items-stretch overflow-clip">
+      <div className="w-full flex-1 flex items-stretch max-h-fit overflow-hidden">
         <Sidebar />
-        <div className="flex-1 max-h-fit overflow-y-hidden">
+        <div className="flex-1 max-h-fit overflow-y-scroll">
           <Outlet />
         </div>
       </div>

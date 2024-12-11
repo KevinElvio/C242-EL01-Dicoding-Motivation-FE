@@ -4,12 +4,11 @@ import { HiOutlineCube } from "react-icons/hi";
 export default function RedeemPointCard({
   redeem_point,
   redeemAction,
-  index,
   className,
 }) {
   return (
     <div
-      onClick={() => redeemAction(redeem_point, index)}
+      onClick={() => redeemAction(redeem_point, redeem_point.item_id)}
       className={`p-4 flex flex-col gap-2 bg-white rounded-lg shadow-md text-center justify-between items-center font-quicksand hover:shadow-lg shadow-neutral-900/50 hover:shadow-theme-base/50 cursor-pointer active:shadow-teal-600/50 duration-200 ${className}`}
     >
       <HiOutlineCube className="w-36 h-36 text-neutral-900" />
