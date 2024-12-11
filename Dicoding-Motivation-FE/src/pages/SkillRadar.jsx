@@ -32,7 +32,7 @@ export default function SkillRadar() {
     // Make the API request to fetch user progress data
     const fetchUserProgress = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/user-progress', {
+        const response = await fetch('https://skillradarapi-989557955176.asia-southeast2.run.app/user-progress', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
