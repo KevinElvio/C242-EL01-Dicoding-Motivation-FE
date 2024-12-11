@@ -28,7 +28,7 @@ export default function EditReminder() {
   });
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + `users/2/reminders/${id}`)
+    fetch(import.meta.env.VITE_API_URL + `users/7/reminders/${id}`)
       .then((res) => {
         console.log(res);
 
@@ -70,7 +70,7 @@ export default function EditReminder() {
       toast.error("Please fill all required field!", { autoClose: 2000 });
       return;
     }
-    fetch(import.meta.env.VITE_API_URL + `users/2/reminders/${id}`, {
+    fetch(import.meta.env.VITE_API_URL + `users/7/reminders/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

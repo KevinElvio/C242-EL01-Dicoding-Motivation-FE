@@ -40,7 +40,7 @@ export default function DetailReminder() {
   });
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + `users/2/reminders/${id}`)
+    fetch(import.meta.env.VITE_API_URL + `users/7/reminders/${id}`)
       .then((res) => {
         return res.json();
       })
@@ -72,7 +72,7 @@ export default function DetailReminder() {
 
   const onDelete = () => {
     const delete_toast = toast.loading("submiting reminder...");
-    fetch(import.meta.env.VITE_API_URL + `users/2/reminders/${id}`, {
+    fetch(import.meta.env.VITE_API_URL + `users/7/reminders/${id}`, {
       method: "DELETE",
     })
       .then(async (res) => {

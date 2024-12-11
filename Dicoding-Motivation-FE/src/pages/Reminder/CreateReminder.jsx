@@ -28,7 +28,7 @@ export default function CreateReminder() {
       toast.error("Please fill all required field!", { autoClose: 2000 });
       return;
     }
-    fetch(import.meta.env.VITE_API_URL + "users/2/reminders", {
+    fetch(import.meta.env.VITE_API_URL + "users/7/reminders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

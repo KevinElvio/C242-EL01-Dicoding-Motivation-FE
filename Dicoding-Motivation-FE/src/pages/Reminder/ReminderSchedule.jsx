@@ -28,7 +28,7 @@ export default function ReminderSchedule() {
   console.log(data);
 
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + "users/2/reminders")
+    fetch(import.meta.env.VITE_API_URL + "users/7/reminders")
       .then((res) => {
         return res.json();
       })
