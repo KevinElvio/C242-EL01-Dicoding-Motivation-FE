@@ -8,22 +8,40 @@ export default function InputButtonSelectDays({
   className = "",
   buttonClassName = "",
   selectedClassName = "",
+  defaultValueControl = [],
 }) {
   const {
-    field: { value = [0, 0, 0, 0, 0, 0, 0], onChange },
+    field: { value = [], onChange },
   } = useController({
     name,
     control,
-    defaultValue: [0, 0, 0, 0, 0, 0, 0], // Default to no days selected
+    defaultValue: defaultValueControl,
   });
 
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   const toggleDay = (index) => {
     if (readOnly) return;
-    const updatedValue = [...value];
-    updatedValue[index] = updatedValue[index] === 0 ? 1 : 0; // Toggle between 0 and 1
-    onChange(updatedValue); // Update the form value
+    const day = days[index];
+    let updatedValue;
+
+    if (value.includes(day)) {
+      // Remove day if it's already selected
+      updatedValue = value.filter((d) => d !== day);
+    } else {
+      // Add day to the selected list
+      updatedValue = [...value, day];
+    }
+
+    onChange(updatedValue);
   };
 
   return (
@@ -37,13 +55,13 @@ export default function InputButtonSelectDays({
             className={`px-4 py-2 rounded-md ${
               readOnly ? "pointer-events-none cursor-default" : ""
             } ${
-              value[index] === 1
+              value.includes(day)
                 ? `bg-theme-base text-white ${selectedClassName}`
                 : `bg-gray-100 text-gray-800 ${buttonClassName}`
             }`}
             onClick={() => toggleDay(index)}
           >
-            {day}
+            {day.slice(0, 3)}
           </button>
         ))}
       </div>

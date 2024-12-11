@@ -1,8 +1,8 @@
 import TitleHeader from "../components/TitleHeader";
-import PointsLeaderboard from "../data/person.json";
+// import PointsLeaderboard from "../data/person.json";
 import { useEffect, useState } from "react";
 import LeaderboardItem from "../components/ItemList/LeaderboardItem";
-import axios from "axios";
+// import axios from "axios";
 // import dotenv from "dotenv";
 
 // dotenv.config();
@@ -10,6 +10,8 @@ import axios from "axios";
 export default function Leaderboard() {
   const [Filter, setFilter] = useState("daily");
   const [PointsLeaderboard, setPointsLeaderboard] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   //   console.log(PointsLeaderboard["daily"]);
 
   const changeFilter = (e) => {
@@ -17,11 +19,32 @@ export default function Leaderboard() {
   };
 
   useEffect(() => {
-    axios.get(import.meta.env.VITE_API_URL + "leaderboards").then((res) => {
-      // console.log(res.data);
-      setPointsLeaderboard(res.data.data);
-    });
+    // axios.get(import.meta.env.VITE_API_URL + "leaderboards").then((res) => {
+    //   // console.log(res.data);
+    // });
+    fetch(import.meta.env.VITE_API_URL + "leaderboards")
+      .then((res) => {
+        return res.json();
+        // setPointsLeaderboard(res.data.data);
+      })
+      .then((res) => {
+        console.log(res);
+        setPointsLeaderboard(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   // console.log(PointsLeaderboard);
 
