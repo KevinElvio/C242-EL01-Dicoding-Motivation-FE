@@ -31,17 +31,11 @@ export default function InputButtonSelectDays({
   const toggleDay = (index) => {
     if (readOnly) return;
     const day = days[index];
-    let updatedValue;
+    const updatedValue = value.includes(day)
+      ? value.filter((d) => d !== day) // Remove if already selected
+      : [...value, day]; // Add new selection
 
-    if (value.includes(day)) {
-      // Remove day if it's already selected
-      updatedValue = value.filter((d) => d !== day);
-    } else {
-      // Add day to the selected list
-      updatedValue = [...value, day];
-    }
-
-    onChange(updatedValue);
+    onChange(updatedValue); // Update the form state
   };
 
   return (

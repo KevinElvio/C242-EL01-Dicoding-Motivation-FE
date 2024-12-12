@@ -46,6 +46,7 @@ export default function DetailReminder() {
       })
       .then((res) => {
         const reminder = res.data[0];
+        console.log(reminder);
 
         // Combine time string with a reference date
         const parsedTime = reminder.time
@@ -63,7 +64,7 @@ export default function DetailReminder() {
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
 
         setError(error);
         setLoading(false);
@@ -169,7 +170,7 @@ export default function DetailReminder() {
           <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between">
             <InputTimePicker
               readOnly={true}
-              currentValue={moment(data.time).format("H:mm A")}
+              currentValue={data.time}
               label="Time"
               name={"time"}
               className="flex-1 max-w-80"

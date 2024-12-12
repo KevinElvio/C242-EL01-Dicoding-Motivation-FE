@@ -113,7 +113,7 @@ export default function CreateReminder() {
         {/* Input TIME */}
         {watch("frequency") == "Daily" ? (
           <InputTimePicker
-            currentValue={moment(watch("time")).format("H:mm A")}
+            currentValue={watch("time")}
             label="Time"
             name={"time"}
             className={"w-80"}
@@ -122,7 +122,7 @@ export default function CreateReminder() {
         ) : watch("frequency") == "Weekly" ? (
           <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between w-full">
             <InputTimePicker
-              currentValue={moment(watch("time")).format("H:mm A")}
+              currentValue={watch("time")}
               label="Time"
               name={"time"}
               className={"w-80"}
@@ -140,7 +140,7 @@ export default function CreateReminder() {
         ) : watch("frequency") == "Once" ? (
           <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between">
             <InputTimePicker
-              currentValue={moment(watch("time")).format("H:mm A")}
+              currentValue={watch("time")}
               label="Time"
               name={"time"}
               className="flex-1 max-w-80"

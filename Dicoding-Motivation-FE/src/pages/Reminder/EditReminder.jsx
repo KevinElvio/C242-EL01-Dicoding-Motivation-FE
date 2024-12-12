@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import TitleHeader from "../../components/TitleHeader";
 import InputText from "../../components/Input/InputText";
 // import DataRemainder from "../../data/reminder-schedule.json";
@@ -13,25 +13,16 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function EditReminder() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const [data, setData] = useState()
 
-  const { control, setValue, watch, handleSubmit, reset } = useForm({
-    // defaultValues: {
-    //   name: DetailReminder.name,
-    //   days: DetailReminder.time.days || [0, 0, 0, 0, 0, 0, 0], // Initialize no reminders
-    //   date: DetailReminder.time.time,
-    //   frequency: DetailReminder.frequency,
-    // },
-  });
+  const { control, setValue, watch, handleSubmit, reset } = useForm({});
 
   useEffect(() => {
     fetch(import.meta.env.VITE_API_URL + `users/7/reminders/${id}`)
       .then((res) => {
-        console.log(res);
-
         return res.json();
       })
       .then((res) => {
@@ -53,8 +44,6 @@ export default function EditReminder() {
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error);
-
         setError(error);
         setLoading(false);
       });
@@ -62,10 +51,14 @@ export default function EditReminder() {
 
   const onSubmit = (data) => {
     const submiting_toast = toast.loading("submiting reminder...");
+
+    // check if users select frequency
     if (!watch("frequency")) {
       toast.error("Please fill all required field!", { autoClose: 2000 });
       return;
     }
+
+    // check if users select some days if frequency is weekly
     if (watch("frequency") == "weekly" && watch("days").length < 1) {
       toast.error("Please fill all required field!", { autoClose: 2000 });
       return;
@@ -99,6 +92,7 @@ export default function EditReminder() {
             type: "success",
             autoClose: 2000,
           });
+          navigate;
           return;
         }
         toast.update(submiting_toast, {
@@ -117,6 +111,8 @@ export default function EditReminder() {
         });
       });
   };
+
+  // console.log(watch("days"));
 
   if (loading) {
     return <div>Loading...</div>;
@@ -167,7 +163,7 @@ export default function EditReminder() {
         ) : watch("frequency") === "Weekly" ? (
           <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between w-full">
             <InputTimePicker
-              currentValue={moment(watch("time")).format("H:mm A")}
+              currentValue={watch("time")}
               label="Time"
               name="time"
               className="w-80"
@@ -184,10 +180,11 @@ export default function EditReminder() {
         ) : watch("frequency") === "Once" ? (
           <div className="flex lg:flex-row flex-col lg:items-center items-start justify-between">
             <InputTimePicker
-              currentValue={moment(watch("time")).format("H:mm A")}
+              currentValue={watch("time")}
               label="Time"
               name="time"
               className="flex-1 max-w-80"
+              setValue={setValue}
             />
             <InputDateTimePicker
               currentValue={watch("date")}

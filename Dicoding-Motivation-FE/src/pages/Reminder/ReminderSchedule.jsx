@@ -20,12 +20,12 @@ export default function ReminderSchedule() {
     setShow(!Show);
   };
 
-  const data = createDataReminderSchedule({
-    number_of_contents: 4,
-    number_of_data: 6,
-  });
+  // const data = createDataReminderSchedule({
+  //   number_of_contents: 4,
+  //   number_of_data: 6,
+  // });
 
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     fetch(import.meta.env.VITE_API_URL + "users/7/reminders")
@@ -33,6 +33,9 @@ export default function ReminderSchedule() {
         return res.json();
       })
       .then((res) => {
+        if (res.data.length >= 1) {
+          setShow(false);
+        }
         setDataReminder(res.data);
         setLoading(false);
       })
