@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import NoReminder from "../../components/Modal/NoReminder";
 import TitleHeader from "../../components/TitleHeader";
 // import dataReminderSchedule from "../../data/reminder-schedule.json";
-import { createDataReminderSchedule } from "../../functions/createRandomData";
+// import { createDataReminderSchedule } from "../../functions/createRandomData";
 import ReminderScheduleCard from "../../components/Card/ReminderCard";
 import ButtonDefault from "../../components/Button/ButtonDefault";
 import { useNavigate } from "react-router";

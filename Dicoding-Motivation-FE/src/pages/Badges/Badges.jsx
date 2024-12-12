@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router";
 
 export default function Badges() {
-  const [UserPoint, setUserPoint] = useState(800);
+  const [UserPoint, setUserPoint] = useState(1500);
   const [Data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -50,7 +50,7 @@ export default function Badges() {
       })
       .then((res) => {
         // console.log(res);
-        setData(res.data);
+        setData(res.data.filter((item) => item.claim === 0));
         setLoading(false);
       })
       .catch((error) => {

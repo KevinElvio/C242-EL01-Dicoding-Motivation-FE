@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import RedeemPointModal from "../../components/Modal/RedeemPointModal";
 
 export default function RedeemPoint() {
-  const [UserPoint, setUserPoint] = useState(800);
+  const [UserPoint, setUserPoint] = useState(1500);
   const [RedeemData, setRedeemData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedRedeem, setSelectedRedeem] = useState(null);
@@ -30,7 +30,7 @@ export default function RedeemPoint() {
           render: res.message,
           autoClose: 2000,
         });
-        setRedeemData(res.data);
+        setRedeemData(res.data.filter((item) => item.claim === 0));
       })
       .catch((err) => {
         toast.update(claim_point_toast, {
@@ -71,7 +71,7 @@ export default function RedeemPoint() {
       })
       .then((res) => {
         // console.log(res);
-        setRedeemData(res.data);
+        setRedeemData(res.data.filter((item) => item.claim === 0));
         setLoading(false);
       })
       .catch((error) => {
@@ -116,6 +116,7 @@ export default function RedeemPoint() {
           {RedeemData.map((redeem_point, index) => (
             <RedeemPointCard
               key={index}
+              user_point={UserPoint}
               redeem_point={redeem_point}
               className="2xl:col-span-2 xl:col-span-3 lg:col-span-4 col-span-6"
               redeemAction={openModal}

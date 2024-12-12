@@ -22,8 +22,8 @@ export default function RedeemPointModal({
           Confirm Redeem: {selectedRedeem?.name}?
         </h3>
         <p className="mb-4">
-          This will add <strong>{selectedRedeem?.points}</strong> points to your
-          account.
+          This will deduct <strong>{selectedRedeem?.points}</strong> points from
+          your account.
         </p>
         <div className="flex justify-center gap-4">
           <button
