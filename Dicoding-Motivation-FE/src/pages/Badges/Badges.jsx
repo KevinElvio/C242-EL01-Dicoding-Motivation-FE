@@ -11,9 +11,9 @@ export default function Badges() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const claimAction = (point) => {
+  const claimAction = (point, id) => {
     const claim_action = toast.loading("Claiming badges...");
-    fetch(import.meta.env.VITE_API_URL + `users/1/badges/1`, {
+    fetch(import.meta.env.VITE_API_URL + `users/2/badges/${id}`, {
       method: "POST",
     })
       .then((res) => {
@@ -43,14 +43,14 @@ export default function Badges() {
     // axios.get(import.meta.env.VITE_API_URL + "leaderboards").then((res) => {
     //   // console.log(res.data);
     // });
-    fetch(import.meta.env.VITE_API_URL + "users/1/badges")
+    fetch(import.meta.env.VITE_API_URL + "users/2/badges")
       .then((res) => {
         return res.json();
         // setPointsLeaderboard(res.data.data);
       })
       .then((res) => {
         // console.log(res);
-        setData(res.data.filter((item) => item.claim === 0));
+        setData(res.data);
         setLoading(false);
       })
       .catch((error) => {

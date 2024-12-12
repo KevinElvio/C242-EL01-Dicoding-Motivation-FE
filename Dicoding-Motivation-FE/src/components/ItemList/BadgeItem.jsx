@@ -13,7 +13,7 @@ export default function BadgeItem({ badge, claim_action, index, className }) {
           {badge.description}
         </p>
         <p className="text-theme-base text-2xl">
-          {badge.claimed ? "Unlocked" : "Locked"}
+          {badge.claim == 1 ? "Unlocked" : "Locked"}
         </p>
       </div>
       <div className="flex flex-col gap-2 justify-self-end items-end">
@@ -23,11 +23,15 @@ export default function BadgeItem({ badge, claim_action, index, className }) {
         </div>
         <button
           className={`border border-theme-base text-theme-base rounded-lg px-4 py-2 ${
-            badge.claimed ? "bg-neutral-400/50 cursor-default" : ""
+            badge.claim == 1
+              ? "bg-neutral-400/50 cursor-default pointer-events-none"
+              : ""
           }`}
-          onClick={() => claim_action(badge.points_reward, index)}
+          onClick={() =>
+            claim_action(badge.points_reward, badge.achievement_id)
+          }
         >
-          {badge.claimed ? "Claimed" : "Claim"}
+          {badge.claim == 1 ? "Claimed" : "Claim"}
         </button>
       </div>
     </div>
